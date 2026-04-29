@@ -7,10 +7,29 @@ namespace Lab7
 {
     public static class TextFileTasks
     {
-        private static Random _random = new Random();
+        private static Random _random;
+
+        static TextFileTasks()
+        {
+            _random = new Random();
+        }
+
+        private static void EnsureDirectoryExists(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentException("Путь к файлу не может быть пустым.");
+            }
+            string directory = Path.GetDirectoryName(path);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+        }
 
         public static void FillTextFileSingleInt(string path, int count)
         {
+            EnsureDirectoryExists(path);
             using (StreamWriter writer = new StreamWriter(path))
             {
                 for (int i = 0; i < count; i++)
@@ -24,6 +43,7 @@ namespace Lab7
         public static void FillTextFileMultipleInts(string path,
             int lines, int numbersPerLine)
         {
+            EnsureDirectoryExists(path);
             using (StreamWriter writer = new StreamWriter(path))
             {
                 for (int i = 0; i < lines; i++)
@@ -45,6 +65,7 @@ namespace Lab7
 
         public static void FillTextFileWithText(string path, string[] lines)
         {
+            EnsureDirectoryExists(path);
             using (StreamWriter writer = new StreamWriter(path))
             {
                 for (int i = 0; i < lines.Length; i++)
@@ -56,7 +77,8 @@ namespace Lab7
 
         public static void FillBinaryFileWithInts(string path, int count)
         {
-            using (BinaryWriter writer = 
+            EnsureDirectoryExists(path);
+            using (BinaryWriter writer =
                 new BinaryWriter(File.Open(path, FileMode.Create)))
             {
                 for (int i = 0; i < count; i++)
@@ -69,6 +91,7 @@ namespace Lab7
 
         public static void FillBinaryFileWithToys(string path, int count)
         {
+            EnsureDirectoryExists(path);
             List<Toy> toys = new List<Toy>();
             string[] names = { "Кукла", "Машинка", "Мяч",
                 "Конструктор", "Пазл", "Робот" };
@@ -91,6 +114,11 @@ namespace Lab7
 
         public static int Task1_CountMaxOccurrences(string filePath)
         {
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("Файл не найден: " +
+                    filePath);
+            }
             int max = int.MinValue;
             int count = 0;
             using (StreamReader reader = new StreamReader(filePath))
@@ -121,6 +149,11 @@ namespace Lab7
 
         public static int Task2_CountEvenNumbers(string filePath)
         {
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("Файл не найден: " +
+                    filePath);
+            }
             int evenCount = 0;
             using (StreamReader reader = new StreamReader(filePath))
             {
@@ -150,6 +183,12 @@ namespace Lab7
         public static void Task3_CopyLinesContaining(string sourcePath,
             string destPath, string substring)
         {
+            if (!File.Exists(sourcePath))
+            {
+                throw new FileNotFoundException("Файл не найден: " +
+                    sourcePath);
+            }
+            EnsureDirectoryExists(destPath);
             using (StreamReader reader = new StreamReader(sourcePath))
             using (StreamWriter writer = new StreamWriter(destPath))
             {
@@ -166,9 +205,14 @@ namespace Lab7
 
         public static int Task4_MaxMinDifference(string binaryFilePath)
         {
+            if (!File.Exists(binaryFilePath))
+            {
+                throw new FileNotFoundException("Файл не найден: " +
+                    binaryFilePath);
+            }
             int min = int.MaxValue;
             int max = int.MinValue;
-            using (BinaryReader reader = 
+            using (BinaryReader reader =
                 new BinaryReader(File.Open(binaryFilePath, FileMode.Open)))
             {
                 while (reader.BaseStream.Position < reader.BaseStream.Length)
@@ -190,9 +234,15 @@ namespace Lab7
         public static void Task5_MostExpensiveToys(string binaryFilePath,
             int k, string outputPath)
         {
+            if (!File.Exists(binaryFilePath))
+            {
+                throw new FileNotFoundException("Файл не найден: " 
+                    + binaryFilePath);
+            }
+            EnsureDirectoryExists(outputPath);
             List<Toy> toys = null;
             XmlSerializer serializer = new XmlSerializer(typeof(List<Toy>));
-            using (FileStream stream = 
+            using (FileStream stream =
                 new FileStream(binaryFilePath, FileMode.Open))
             {
                 toys = (List<Toy>)serializer.Deserialize(stream);
@@ -260,8 +310,8 @@ namespace Lab7
             {
                 if (value < 0)
                 {
-                    throw new ArgumentException("Минимальный возраст не " +
-                        "может быть отрицательным");
+                    throw new ArgumentException("Минимальный возраст не" +
+                        " может быть отрицательным");
                 }
                 _ageMin = value;
             }
@@ -274,13 +324,13 @@ namespace Lab7
             {
                 if (value < 0)
                 {
-                    throw new ArgumentException("Максимальный возраст не" +
-                        " может быть отрицательным");
+                    throw new ArgumentException("Максимальный возраст" +
+                        " не может быть отрицательным");
                 }
                 if (value < _ageMin)
                 {
-                    throw new ArgumentException("Максимальный возраст не" +
-                        " может быть меньше минимального");
+                    throw new ArgumentException("Максимальный возраст" +
+                        " не может быть меньше минимального");
                 }
                 _ageMax = value;
             }

@@ -6,13 +6,13 @@ namespace Lab7
 {
     public static class CollectionTasks
     {
-        public static void Task6_MoveFirstToEnd(List<int> list)
+        public static void Task6_MoveFirstToEnd<T>(List<T> list)
         {
             if (list == null || list.Count == 0)
             {
                 return;
             }
-            int first = list[0];
+            T first = list[0];
             for (int i = 0; i < list.Count - 1; i++)
             {
                 list[i] = list[i + 1];
@@ -20,22 +20,21 @@ namespace Lab7
             list[list.Count - 1] = first;
         }
 
-        public static void Task7_RemoveElementsWithSameNeighbors
-            (LinkedList<int> list)
+        public static void Task7_RemoveElementsWithSameNeighbors<T>
+            (LinkedList<T> list)
         {
             if (list.Count < 2)
             {
                 return;
             }
-            LinkedListNode<int> current = list.First;
-            LinkedListNode<int> firstNode = list.First;
-            LinkedListNode<int> lastNode = list.Last;
-            List<LinkedListNode<int>> toRemove 
-                = new List<LinkedListNode<int>>();
+            LinkedListNode<T> current = list.First;
+            LinkedListNode<T> firstNode = list.First;
+            LinkedListNode<T> lastNode = list.Last;
+            List<LinkedListNode<T>> toRemove = new List<LinkedListNode<T>>();
             while (current != null)
             {
-                LinkedListNode<int> prev = current.Previous;
-                LinkedListNode<int> next = current.Next;
+                LinkedListNode<T> prev = current.Previous;
+                LinkedListNode<T> next = current.Next;
                 if (prev == null)
                 {
                     prev = lastNode;
@@ -44,7 +43,8 @@ namespace Lab7
                 {
                     next = firstNode;
                 }
-                if (prev.Value == next.Value)
+                if (EqualityComparer<T>.
+                    Default.Equals(prev.Value, next.Value))
                 {
                     toRemove.Add(current);
                 }
@@ -62,50 +62,52 @@ namespace Lab7
             out HashSet<string> boughtBySome,
             out HashSet<string> boughtByNone)
         {
-            allBoughtByEveryone = new HashSet<string>();
-            boughtBySome = new HashSet<string>();
-            boughtByNone = new HashSet<string>();
-            Dictionary<string, HashSet<int>> boughtCount = 
-                new Dictionary<string, HashSet<int>>();
+            HashSet<string> allFactories = new HashSet<string>();
             for (int i = 0; i < factories.Length; i++)
             {
-                boughtCount[factories[i]] = new HashSet<int>();
+                allFactories.Add(factories[i]);
             }
+
+            List<HashSet<string>> buyerSets = new List<HashSet<string>>();
             for (int i = 0; i < purchases.Length; i++)
             {
+                HashSet<string> set = new HashSet<string>();
                 for (int j = 0; j < purchases[i].Length; j++)
                 {
-                    string factory = purchases[i][j];
-                    if (boughtCount.ContainsKey(factory))
-                    {
-                        boughtCount[factory].Add(i);
-                    }
+                    set.Add(purchases[i][j]);
                 }
+                buyerSets.Add(set);
             }
-            int totalBuyers = purchases.Length;
-            foreach (string factory in factories)
+
+            HashSet<string> intersection = new HashSet<string>(allFactories);
+            for (int i = 0; i < buyerSets.Count; i++)
             {
-                int count = boughtCount[factory].Count;
-                if (count == totalBuyers)
-                {
-                    allBoughtByEveryone.Add(factory);
-                }
-                else if (count > 0)
-                {
-                    boughtBySome.Add(factory);
-                }
-                else
-                {
-                    boughtByNone.Add(factory);
-                }
+                intersection.IntersectWith(buyerSets[i]);
             }
+            allBoughtByEveryone = intersection;
+
+            HashSet<string> union = new HashSet<string>();
+            for (int i = 0; i < buyerSets.Count; i++)
+            {
+                union.UnionWith(buyerSets[i]);
+            }
+
+            boughtByNone = new HashSet<string>(allFactories);
+            boughtByNone.ExceptWith(union);
+
+            boughtBySome = new HashSet<string>(union);
+            boughtBySome.ExceptWith(allBoughtByEveryone);
         }
 
         public static void Task9_PrintVoicelessConsonants(string filePath)
         {
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("Файл не найден: " + filePath);
+            }
             string text = File.ReadAllText(filePath);
             string[] words = text.Split(new char[] { ' ', '\n', '\r', '\t',
-                '.', ',', '!', '?', ';', ':', '-' }, 
+                '.', ',', '!', '?', ';', ':', '-' },
                 StringSplitOptions.RemoveEmptyEntries);
             char[] voiceless = { 'к', 'п', 'с', 'т', 'ф', 'х', 'ц',
                 'ч', 'ш', 'щ' };
@@ -160,18 +162,19 @@ namespace Lab7
             Console.WriteLine();
         }
 
-        public static void Task10_SourCreamAnalysis(string filePath, 
+        public static void Task10_SourCreamAnalysis(string filePath,
             out int count15, out int count20, out int count25)
         {
-            count15 = 0;
-            count20 = 0;
-            count25 = 0;
-            int minPrice15 = int.MaxValue;
-            int minPrice20 = int.MaxValue;
-            int minPrice25 = int.MaxValue;
-            int shopsCount15 = 0;
-            int shopsCount20 = 0;
-            int shopsCount25 = 0;
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("Файл не найден: " + filePath);
+            }
+            Dictionary<int, (int minPrice, int count)> data =
+                new Dictionary<int, (int, int)>();
+            data[15] = (int.MaxValue, 0);
+            data[20] = (int.MaxValue, 0);
+            data[25] = (int.MaxValue, 0);
+
             using (StreamReader reader = new StreamReader(filePath))
             {
                 string line;
@@ -213,47 +216,21 @@ namespace Lab7
                     {
                         continue;
                     }
-                    if (fat == 15)
+                    int currentMin = data[fat].minPrice;
+                    int currentCount = data[fat].count;
+                    if (price < currentMin)
                     {
-                        if (price < minPrice15)
-                        {
-                            minPrice15 = price;
-                            shopsCount15 = 1;
-                        }
-                        else if (price == minPrice15)
-                        {
-                            shopsCount15++;
-                        }
+                        data[fat] = (price, 1);
                     }
-                    else if (fat == 20)
+                    else if (price == currentMin)
                     {
-                        if (price < minPrice20)
-                        {
-                            minPrice20 = price;
-                            shopsCount20 = 1;
-                        }
-                        else if (price == minPrice20)
-                        {
-                            shopsCount20++;
-                        }
-                    }
-                    else if (fat == 25)
-                    {
-                        if (price < minPrice25)
-                        {
-                            minPrice25 = price;
-                            shopsCount25 = 1;
-                        }
-                        else if (price == minPrice25)
-                        {
-                            shopsCount25++;
-                        }
+                        data[fat] = (currentMin, currentCount + 1);
                     }
                 }
             }
-            count15 = (minPrice15 == int.MaxValue) ? 0 : shopsCount15;
-            count20 = (minPrice20 == int.MaxValue) ? 0 : shopsCount20;
-            count25 = (minPrice25 == int.MaxValue) ? 0 : shopsCount25;
+            count15 = (data[15].minPrice == int.MaxValue) ? 0 : data[15].count;
+            count20 = (data[20].minPrice == int.MaxValue) ? 0 : data[20].count;
+            count25 = (data[25].minPrice == int.MaxValue) ? 0 : data[25].count;
         }
     }
 }

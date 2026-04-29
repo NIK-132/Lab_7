@@ -7,17 +7,21 @@ namespace Lab7
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("=== Задания 1–5 (текстовые и бинарные файлы) ===\n");
+            Console.WriteLine("Задания 1–5 (текстовые и бинарные файлы) \n");
 
             string intSinglePath = "ints_single.txt";
             TextFileTasks.FillTextFileSingleInt(intSinglePath, 20);
-            int maxCount = TextFileTasks.Task1_CountMaxOccurrences(intSinglePath);
-            Console.WriteLine("Задание 1. Количество вхождений максимального элемента: " + maxCount);
+            int maxCount =
+                TextFileTasks.Task1_CountMaxOccurrences(intSinglePath);
+            Console.WriteLine("Задание 1. Количество вхождений " +
+                "максимального элемента: " + maxCount);
 
             string intMultiPath = "ints_multi.txt";
             TextFileTasks.FillTextFileMultipleInts(intMultiPath, 10, 5);
-            int evenCount = TextFileTasks.Task2_CountEvenNumbers(intMultiPath);
-            Console.WriteLine("Задание 2. Количество чётных элементов: " + evenCount);
+            int evenCount =
+                TextFileTasks.Task2_CountEvenNumbers(intMultiPath);
+            Console.WriteLine("Задание 2. " +
+                "Количество чётных элементов: " + evenCount);
 
             string textSourcePath = "text_source.txt";
             string textDestPath = "text_dest.txt";
@@ -28,14 +32,18 @@ namespace Lab7
                 "Информатика и программирование"
             };
             TextFileTasks.FillTextFileWithText(textSourcePath, lines);
-            TextFileTasks.Task3_CopyLinesContaining(textSourcePath, textDestPath, "форма");
-            Console.WriteLine("Задание 3. Скопированы строки, содержащие 'форма' в файл " + textDestPath);
+            TextFileTasks.Task3_CopyLinesContaining
+                (textSourcePath, textDestPath, "форма");
+            Console.WriteLine("Задание 3. Скопированы строки, " +
+                "содержащие 'форма' в файл " + textDestPath);
 
             string binaryIntsPath = "data.bin";
             TextFileTasks.FillBinaryFileWithInts(binaryIntsPath, 15);
             int diff = TextFileTasks.Task4_MaxMinDifference(binaryIntsPath);
-            Console.WriteLine("\nСодержимое бинарного файла " + binaryIntsPath + ":");
-            using (BinaryReader reader = new BinaryReader(File.Open(binaryIntsPath, FileMode.Open)))
+            Console.WriteLine("\nСодержимое бинарного файла " +
+                binaryIntsPath + ":");
+            using (BinaryReader reader =
+                new BinaryReader(File.Open(binaryIntsPath, FileMode.Open)))
             {
                 int index = 1;
                 while (reader.BaseStream.Position < reader.BaseStream.Length)
@@ -52,18 +60,24 @@ namespace Lab7
             string toysPath = "toys.xml";
             TextFileTasks.FillBinaryFileWithToys(toysPath, 10);
             string outputToysPath = "expensive_toys.txt";
-            TextFileTasks.Task5_MostExpensiveToys(toysPath, 50, outputToysPath);
-            Console.WriteLine("Задание 5. Названия самых дорогих игрушек (в пределах 50 руб.) записаны в " + outputToysPath);
+            TextFileTasks.Task5_MostExpensiveToys
+                (toysPath, 50, outputToysPath);
+            Console.WriteLine("Задание 5. Названия самых дорогих игрушек" +
+                " (в пределах 50 руб.) записаны в " + outputToysPath);
 
-            Console.WriteLine("\n=== Задания 6–10 (коллекции) ===\n");
+            Console.WriteLine("\nЗадания 6–10 (коллекции) \n");
 
             List<int> list = new List<int> { 1, 2, 3, 4, 5 };
             CollectionTasks.Task6_MoveFirstToEnd(list);
-            Console.Write("Задание 6. Список после переноса первого в конец: ");
-            for (int i = 0; i < list.Count; i++)
-            {
-                Console.Write(list[i] + " ");
-            }
+            Console.Write("Задание 6.1 (int): ");
+            for (int i = 0; i < list.Count; i++) Console.Write(list[i] + " ");
+            Console.WriteLine();
+
+            List<string> stringList = new List<string> 
+            { "один", "два", "три", "четыре", "пять" };
+            CollectionTasks.Task6_MoveFirstToEnd(stringList);
+            Console.Write("Задание 6.2 (string): ");
+            foreach (string s in stringList) Console.Write(s + " ");
             Console.WriteLine();
 
             LinkedList<int> linkedList = new LinkedList<int>();
@@ -73,14 +87,23 @@ namespace Lab7
             linkedList.AddLast(2);
             linkedList.AddLast(1);
             CollectionTasks.Task7_RemoveElementsWithSameNeighbors(linkedList);
-            Console.Write("Задание 7. LinkedList после удаления: ");
-            foreach (int val in linkedList)
-            {
-                Console.Write(val + " ");
-            }
+            Console.Write("Задание 7.1 (int): ");
+            foreach (int v in linkedList) Console.Write(v + " ");
             Console.WriteLine();
 
-            string[] factories = { "ФабрикаА", "ФабрикаБ", "ФабрикаВ", "ФабрикаД" };
+            LinkedList<double> doubleList = new LinkedList<double>();
+            doubleList.AddLast(1.5);
+            doubleList.AddLast(2.3);
+            doubleList.AddLast(3.1);
+            doubleList.AddLast(2.3);
+            doubleList.AddLast(1.5);
+            CollectionTasks.Task7_RemoveElementsWithSameNeighbors(doubleList);
+            Console.Write("Задание 7.2 (double): ");
+            foreach (double d in doubleList) Console.Write(d + " ");
+            Console.WriteLine();
+
+            string[] factories = { "ФабрикаА", "ФабрикаБ",
+                "ФабрикаВ", "ФабрикаД" };
             string[][] purchases = new string[][]
             {
                 new string[] { "ФабрикаА", "ФабрикаБ" },
@@ -112,15 +135,17 @@ namespace Lab7
             string creamDataPath = "cream.txt";
             string[] creamLines = {
                 "5",
-                "Перекресток Короленко 15 3200",
+                "Перекресток Короленко 15 3100",
                 "Ашан Ленина 15 3100",
                 "Магнит Мира 20 3500",
                 "Перекресток Садовая 20 3400",
                 "Лента Невский 25 4000"
             };
             File.WriteAllLines(creamDataPath, creamLines);
-            CollectionTasks.Task10_SourCreamAnalysis(creamDataPath, out int c15, out int c20, out int c25);
-            Console.WriteLine($"\nЗадание 10. Количество магазинов с минимальной ценой: 15% - {c15}, 20% - {c20}, 25% - {c25}");
+            CollectionTasks.Task10_SourCreamAnalysis
+                (creamDataPath, out int c15, out int c20, out int c25);
+            Console.WriteLine($"\nЗадание 10. Количество магазинов с " +
+                $"минимальной ценой: 15% - {c15}, 20% - {c20}, 25% - {c25}");
 
             Console.ReadKey();
         }

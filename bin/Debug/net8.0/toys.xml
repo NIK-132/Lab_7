@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfToy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Toy>
-    <Name>Конструктор</Name>
-    <Cost>984</Cost>
-    <AgeMin>5</AgeMin>
-    <AgeMax>6</AgeMax>
+    <Name>Машинка</Name>
+    <Cost>312</Cost>
+    <AgeMin>3</AgeMin>
+    <AgeMax>7</AgeMax>
   </Toy>
   <Toy>
     <Name>Робот</Name>
-    <Cost>443</Cost>
-    <AgeMin>5</AgeMin>
-    <AgeMax>8</AgeMax>
+    <Cost>284</Cost>
+    <AgeMin>0</AgeMin>
+    <AgeMax>2</AgeMax>
   </Toy>
   <Toy>
     <Name>Пазл</Name>
-    <Cost>492</Cost>
-    <AgeMin>5</AgeMin>
-    <AgeMax>10</AgeMax>
+    <Cost>428</Cost>
+    <AgeMin>1</AgeMin>
+    <AgeMax>4</AgeMax>
   </Toy>
   <Toy>
-    <Name>Кукла</Name>
-    <Cost>741</Cost>
-    <AgeMin>4</AgeMin>
-    <AgeMax>9</AgeMax>
-  </Toy>
-  <Toy>
-    <Name>Робот</Name>
-    <Cost>125</Cost>
-    <AgeMin>4</AgeMin>
-    <AgeMax>8</AgeMax>
-  </Toy>
-  <Toy>
-    <Name>Робот</Name>
-    <Cost>707</Cost>
-    <AgeMin>4</AgeMin>
-    <AgeMax>5</AgeMax>
+    <Name>Мяч</Name>
+    <Cost>457</Cost>
+    <AgeMin>2</AgeMin>
+    <AgeMax>6</AgeMax>
   </Toy>
   <Toy>
     <Name>Машинка</Name>
-    <Cost>501</Cost>
-    <AgeMin>4</AgeMin>
-    <AgeMax>8</AgeMax>
+    <Cost>251</Cost>
+    <AgeMin>1</AgeMin>
+    <AgeMax>2</AgeMax>
   </Toy>
   <Toy>
-    <Name>Кукла</Name>
-    <Cost>545</Cost>
-    <AgeMin>5</AgeMin>
-    <AgeMax>8</AgeMax>
+    <Name>Робот</Name>
+    <Cost>524</Cost>
+    <AgeMin>3</AgeMin>
+    <AgeMax>4</AgeMax>
   </Toy>
   <Toy>
-    <Name>Кукла</Name>
-    <Cost>462</Cost>
+    <Name>Мяч</Name>
+    <Cost>173</Cost>
+    <AgeMin>1</AgeMin>
+    <AgeMax>5</AgeMax>
+  </Toy>
+  <Toy>
+    <Name>Робот</Name>
+    <Cost>266</Cost>
     <AgeMin>4</AgeMin>
     <AgeMax>7</AgeMax>
   </Toy>
   <Toy>
-    <Name>Кукла</Name>
-    <Cost>886</Cost>
-    <AgeMin>5</AgeMin>
-    <AgeMax>10</AgeMax>
+    <Name>Мяч</Name>
+    <Cost>140</Cost>
+    <AgeMin>3</AgeMin>
+    <AgeMax>6</AgeMax>
+  </Toy>
+  <Toy>
+    <Name>Конструктор</Name>
+    <Cost>392</Cost>
+    <AgeMin>1</AgeMin>
+    <AgeMax>4</AgeMax>
   </Toy>
 </ArrayOfToy>
